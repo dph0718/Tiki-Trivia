@@ -1,0 +1,36 @@
+body {
+    background-color: black;
+    font-family: ribeye
+}
+
+#question {
+    background: red;
+}
+
+#answers {
+    background: blue;
+}
+
+#answerChoice {
+    background: green;
+}
+
+#timer {
+    background: gray;
+}
+
+#scoreboard {
+    background: rebeccapurple;
+}
+
+#points {
+    background: bisque;
+}
+
+#right {
+    background: lime;
+}
+
+#wrong {
+    background-color: orange;
+}
