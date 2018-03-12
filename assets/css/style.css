@@ -84,12 +84,12 @@ body {
     height: 10vw;
     left: 10%;
     top:10%;
-
 }
 
 #secondsLeft{
     font-size: 1vw;
 }
+
 #board {
     background-image: url('../images/blackboard2.png');
     background-size: 100% 100%;

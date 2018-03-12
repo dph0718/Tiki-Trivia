@@ -137,11 +137,9 @@ function startGame() {
     gameState = 1;
     $('#right').html("Right: <span class='writ'>" + right + '</span>');
     $('#wrong').html("Wrong: <span class='writ'>" + wrong + '</span>');
-    console.log("questions: " + questions, "randomizedQuestions: " + randomizedQuestions);
     makeArrayOfNumbers(questions);
     randomizeQuestions(questions, randomizedQuestions);
     chooseQuestion2();
-    console.log("questions: " + questions, "randomizedQuestions: " + randomizedQuestions);
 }
 function makeArrayOfNumbers(array) {
     for (var i = 0; i < array.length; i++) {
@@ -154,15 +152,12 @@ function randomizeQuestions() {
         var rando = random(arrayOfNumbers.length);
         var rando2 = arrayOfNumbers[rando];
         randomizedQuestions.push(questions[rando2]);
-        console.log(randomizedQuestions[3]);
         arrayOfNumbers.splice(rando, 1);
     }
 }
 
 function chooseQuestion2() {
     if (usedQuestions < makeArrayLength) {
-        console.log(makeArrayLength + '||  ' + usedQuestions);
-        console.log("chooseQuestion2: " + randomizedQuestions[usedQuestions])
         gameState = 1;
         var questionIs = randomizedQuestions[usedQuestions];
         $("#question").html(questionIs.question);
@@ -170,8 +165,6 @@ function chooseQuestion2() {
         var randAnswers = [];
         questionIs.randomizeAnswers(randAnswers);
         usedQuestions++;
-        console.log(usedQuestions);
-        console.log(makeArrayLength);
         timer.start();
 
         $('#answerA').html(randAnswers[0].answer);
@@ -211,8 +204,6 @@ function detectAnswer() {
 }
 
 function showResponse() {
-    console.log("response shown");
-    console.log('gamestate: ' + gameState);
 
 
     $('.answerChoice').off('click');
@@ -228,6 +219,8 @@ function showResponse() {
             "Overachiever."
         ]
         $("#question").html(winResponses[random(winResponses.length)]);
+        var ding = new Audio('./assets/sounds/bell.mp3');
+        setTimeout(function(){ding.play()}, 200);
         //function for displaying points gained. animate in CSS
         setTimeout(chooseQuestion2, 2200);
     } else if (gameState === 3) {
@@ -270,13 +263,16 @@ function showResponse() {
 
 //empty shot glass, get buzzed======================================
 function takeShot() {
+    var thud = new Audio('./assets/sounds/glasssetdown.mp3');
+    var gulp = new Audio('./assets/sounds/gulp.mp3');
+    setTimeout(function(){gulp.play()}, 250);
+    setTimeout(function(){thud.play()}, 450);
     var i = usedQuestions - 1;
     var glass = $("#glass" + i);
-    var blur = bac + 1;
+    var blur = bac + 2;
     bac = blur;
     glass.attr('src', 'assets/images/shotempty.png');
     $('#pageContainer').css('filter', "blur(" + blur + 'px)');
-    console.log(glass, 'blur: ' + blur, 'bac: ' + bac);
 }
 
 
@@ -325,8 +321,6 @@ function gameOver() {
 
 //putting up shot glasses=================================================================\
 function stackem() {
-    console.log('stacking em');
-    console.log(makeArrayLength);
     var x = 200;
     var width = 4;
     for (var i = 0; i < makeArrayLength; i++) {
@@ -336,7 +330,6 @@ function stackem() {
             .css('height', width * 1.3 + 'vw')
             .css('left', ((5 + i / 2) * width) + '%')
             .css('bottom', '13vw');
-        console.log('stackedIt');
         $('#pageContainer').append(glass);
     }
 }
