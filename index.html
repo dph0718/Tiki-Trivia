@@ -11,22 +11,32 @@
 </head>
 
 <body>
-    <div id='question'>Beginning, prompt the user to start.</div>
-    <div id='answers'>
-        <div id='answerA' class='answerChoice'>One of these buttons will start.</div>
-        <div id='answerB' class='answerChoice'>The others will be hidden.</div>
-        <div id='answerC' class='answerChoice'>Like this one.</div>
-        <div id='answerD' class='answerChoice'>And this one.</div>
-    </div>
-    <div id='timer'>00:00</div>
-    <div id='scoreboard'>0 points total </div>
-    <div id='points'></div>
-    <div id='right'></div>
-    <div id='wrong'></div>
+    <div id=pageContainer>
+        <div id='question'>Welcome to trivia! Click the button below to get started!<br><br>
+            <span class='aside'>...btw, you'll have to take a shot if you get one wrong.</span></div>
+        <div id='answers'>
+            <div id='answerA' class='answerChoice'>Yes, this button, Einstein.</div>
+            <div id='answerB' class='answerChoice'>The others will be hidden.</div>
+            <div id='answerC' class='answerChoice'>Like this one.</div>
+            <div id='answerD' class='answerChoice'>And this one.</div>
+        </div>
+        <div id='timerBox'>
+            <div class='stat' id="secondsLeft">Secs left: </div>
+            <div id='timer'></div>
+        </div>
+        <div id='board'>
+            <div id='scoreboard' class='stat'>Score: </div>
+            <div class='stat'>Points remaining: </div>
+            <div id='points' class='stat writ'> </div>
+            <div id='right' class='stat'>Right: </div>
+            <div id='wrong' class='stat'>Wrong: </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-    <script src='assets/javascript/app.js'></script>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+        <script src='assets/javascript/app.js'></script>
+    </div>
 </body>
 
 </html>

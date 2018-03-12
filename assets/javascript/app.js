@@ -57,6 +57,48 @@ var question04 = new Question(
     "The Chum Bucket.",
     "Winslow, Arizona."
 )
+var question05 = new Question(
+    "What is the state bird of Wyoming?",
+    "Western Meadowlark",
+    "Brewer's Blackbird",
+    "American Goldfinch",
+    "Wyoming doesn't have a state bird."
+)
+var question06 = new Question(
+    "Which of the following would Rick Astley - not - never do?",
+    "Eat you alive",
+    "Give you up",
+    "Let you down",
+    "Run around and desert you"
+)
+var question07 = new Question(
+    "Who was the first person to travel into space?",
+    "Jesus",
+    "John Glenn",
+    "Yuri Gagarin",
+    "Amelia Earhart"
+)
+var question08 = new Question(
+    "How many jQueries are in a JSON DOM API element before concatenation?",
+    "Hogwash!",
+    "5d",
+    "Several more than are in 2 asynchronous HTMLs over CDN",
+    "2000"
+)
+var question09 = new Question(
+    "Chuck Taylor was:",
+    "a shoe salesman",
+    "a famous basketball player",
+    "the owner of 13 McDonald's franchises",
+    "Richard Nixon's grand-nephew"
+)
+var question10 = new Question(
+    "What percentage of humans have prehensile tails?",
+    "0 %",
+    "50 %",
+    "35 %",
+    "2 %"
+)
 // 0: not started; 1: started; 2: correct and awaiting feedback; 3:incorrect, awaiting feedback; 4: timed out; 5: finished.
 var gameState = 0;
 //array of question objects:
@@ -64,20 +106,27 @@ var questions = [
     question01,
     question02,
     question03,
-    question04
+    question04,
+    question05,
+    question06,
+    question07,
+    question08,
+    question09,
+    question10
 ]
 var randomizedQuestions = [];
 var right = 0;
 var wrong = 0;
 var score = 0;
 var initialPoints = 1000;
-var timeAllowed = 5;
+var timeAllowed = 10;
 var points = initialPoints;
 var correctAnswer;
 var arrayOfNumbers = [];
-var makeArrayLength;
+var makeArrayLength = questions.length;
 var usedQuestions = 0;
 var answerChoicesNum = 4;
+var bac = 0;
 
 function random(num) {
     return Math.floor(Math.random() * num);
@@ -86,8 +135,8 @@ function random(num) {
 function startGame() {
     $('#answerA').off('click');
     gameState = 1;
-    $('#right').html("right: " + right);
-    $('#wrong').html("wrong: " + wrong);
+    $('#right').html("Right: <span class='writ'>" + right + '</span>');
+    $('#wrong').html("Wrong: <span class='writ'>" + wrong + '</span>');
     console.log("questions: " + questions, "randomizedQuestions: " + randomizedQuestions);
     makeArrayOfNumbers(questions);
     randomizeQuestions(questions, randomizedQuestions);
@@ -98,9 +147,7 @@ function makeArrayOfNumbers(array) {
     for (var i = 0; i < array.length; i++) {
         arrayOfNumbers.push(i);
     }
-    makeArrayLength = arrayOfNumbers.length;
 };
-
 
 function randomizeQuestions() {
     for (var j = 0; j < makeArrayLength; j++) {
@@ -114,6 +161,7 @@ function randomizeQuestions() {
 
 function chooseQuestion2() {
     if (usedQuestions < makeArrayLength) {
+        console.log(makeArrayLength + '||  ' + usedQuestions);
         console.log("chooseQuestion2: " + randomizedQuestions[usedQuestions])
         gameState = 1;
         var questionIs = randomizedQuestions[usedQuestions];
@@ -135,7 +183,7 @@ function chooseQuestion2() {
         $('#answerB').data('anSource', randAnswers[1]).show();
         $('#answerC').data('anSource', randAnswers[2]).show();
         $('#answerD').data('anSource', randAnswers[3]).show();
-        $('#points').html("available points: " + points);
+        $('#points').html(points);
 
         detectAnswer();
     } else {
@@ -168,20 +216,20 @@ function showResponse() {
 
 
     $('.answerChoice').off('click');
-    $("#scoreboard").html('score: ' + score);
-    $("#right").html("right: " + right);
-    $("#wrong").html("wrong: " + wrong);
+    $("#scoreboard").html('Score: <span class="writ">' + score + '</span>');
+    $("#right").html("Right: <span class='writ'>" + right + '</span>');
+    $("#wrong").html("Wrong: <span class='writ'>" + wrong + '</span>');
     if (gameState === 2) {
         var winResponses = [
             "You're a genius.",
-            "Are you cheating?",
+            "Are you cheating!?",
             "Yep. That's right.",
             "Way to go!",
             "Overachiever."
         ]
         $("#question").html(winResponses[random(winResponses.length)]);
         //function for displaying points gained. animate in CSS
-        setTimeout(chooseQuestion2, 1000);
+        setTimeout(chooseQuestion2, 2200);
     } else if (gameState === 3) {
         var loseResponses = [
             "Nope.",
@@ -190,8 +238,9 @@ function showResponse() {
             "That was the wrong guess.",
             "You've clearly not been studying."
         ]
-        $("#question").html(loseResponses[random(loseResponses.length)] + " The answer was " + correctAnswer);
-        setTimeout(chooseQuestion2, 1000);
+        $("#question").html(loseResponses[random(loseResponses.length)] + " The answer was &quot;" + correctAnswer + "&quot;");
+        takeShot();
+        setTimeout(chooseQuestion2, 2200);
     } else if (gameState === 4) {
         var timeResponses = [
             "Couldn't make up your mind?",
@@ -200,12 +249,38 @@ function showResponse() {
             "We ain't got all day..."
         ]
         $("#question").html(timeResponses[random(timeResponses.length)]);
-        setTimeout(chooseQuestion2, 1000);
+        takeShot();
+        setTimeout(chooseQuestion2, 2200);
     } else if (gameState === 5) {
         gameOver();
-        $("#question").html('You got through them all.');
+        if (bac <= 0) {
+            $("#question").html("Congratulations! You're driving!");
+        } else if (bac > 0 && bac < 4) {
+            $("#question").html("Good job. Don't fall off the barstool there, buddy.");
+
+        } else if (bac >= 4) {
+            $("#question").html('Go sober up!')
+                .css('filter', 'blur(0px)')
+                .css('font-size', '5vw');
+
+
+        }
     }
 }
+
+//empty shot glass, get buzzed======================================
+function takeShot() {
+    var i = usedQuestions - 1;
+    var glass = $("#glass" + i);
+    var blur = bac + 1;
+    bac = blur;
+    glass.attr('src', 'assets/images/shotempty.png');
+    $('#pageContainer').css('filter', "blur(" + blur + 'px)');
+    console.log(glass, 'blur: ' + blur, 'bac: ' + bac);
+}
+
+
+//==================================================================
 
 function reset() {
     right = 0;
@@ -217,10 +292,20 @@ function reset() {
     randAnswers = [];
     $('#answerA').off('click');
     gameState = 1;
-    $('#right').html("right: " + right);
-    $('#wrong').html("wrong: " + wrong);
+    $("#scoreboard").html('Score: <span class="writ">' + score + '</span>');
+    $('#right').html("Right: <span class='writ'>" + right + '</span>');
+    $('#wrong').html("Wrong: <span class='writ'>" + wrong + '</span>');
     makeArrayOfNumbers(questions);
     randomizeQuestions(questions, randomizedQuestions);
+    for (var i = 0; i < makeArrayLength; i++) {
+        $("#glass" + i).remove();
+    }
+    $("#question")
+        .css('filter', 'none')
+        .css('font-size', '2vw');
+
+
+    stackem();
     chooseQuestion2();
 
 }
@@ -238,14 +323,39 @@ function gameOver() {
 
 }
 
+//putting up shot glasses=================================================================\
+function stackem() {
+    console.log('stacking em');
+    console.log(makeArrayLength);
+    var x = 200;
+    var width = 4;
+    for (var i = 0; i < makeArrayLength; i++) {
+        var glass = $("<img id='glass" + i + "'>").attr('src', 'assets/images/shotfull.png');
+        glass.css('position', 'relative')
+            .css('width', width + 'vw')
+            .css('height', width * 1.3 + 'vw')
+            .css('left', ((5 + i / 2) * width) + '%')
+            .css('bottom', '13vw');
+        console.log('stackedIt');
+        $('#pageContainer').append(glass);
+    }
+}
 
 //Timer==============================================================================================================
 var interv;
 var countingDown = false;
 function updateScores() {
     points -= (initialPoints / timeAllowed);
-    $('#points').html("available points: " + points);
+    $('#points').html(points);
     $('#timer').html(timer.time);
+    //and sober up:
+    if (bac > 0) {
+        bac -= 0.1;
+    } else {
+        bac = 0;
+    }
+    var blur = bac;
+    $('#pageContainer').css('filter', "blur(" + blur + 'px)');
 }
 
 var timer = {
@@ -270,6 +380,7 @@ var timer = {
         else {
             timer.time = 0;
             timer.stop();
+            wrong++;
             gameState = 4;
             showResponse();
         }
@@ -280,6 +391,12 @@ var timer = {
 //End of timer ======================================================================================================
 
 window.onload = function () {
+    $('#points').html(initialPoints);
+    $('#timer').html(timeAllowed);
+    $('#right').html("Right: <span class='writ'>" + right + '</span>');
+    $('#wrong').html("Wrong: <span class='writ'>" + wrong + '</span>');
+    $("#scoreboard").html('Score: <span class="writ">' + score + '</span>');
+    stackem();
     if (gameState === 0) {
         $('#answerB').hide();
         $('#answerC').hide();
