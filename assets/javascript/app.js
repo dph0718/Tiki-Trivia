@@ -269,7 +269,7 @@ function takeShot() {
     setTimeout(function(){thud.play()}, 450);
     var i = usedQuestions - 1;
     var glass = $("#glass" + i);
-    var blur = bac + 2;
+    var blur = bac + 1;
     bac = blur;
     glass.attr('src', 'assets/images/shotempty.png');
     $('#pageContainer').css('filter', "blur(" + blur + 'px)');
