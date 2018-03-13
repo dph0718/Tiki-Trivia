@@ -20,7 +20,7 @@ var Question = function (question, answerA, answerB, answerC, answerD) {
     ]
     this.randomizeAnswers = function (array) {
         makeArrayOfNumbers(this.answers);
-        for (var i = 0; i < makeArrayLength; i++) {
+        for (var i = 0; i < this.answers.length; i++) {
             var rando = random(arrayOfNumbers.length);
             var rando2 = arrayOfNumbers[rando];
             array.push(this.answers[rando2]);
@@ -114,7 +114,28 @@ var questions = [
     question09,
     question10
 ]
+var winResponses = [
+    "You're a genius.",
+    "Are you cheating!?",
+    "Yep. That's right.",
+    "Way to go!",
+    "Overachiever."
+]
+var loseResponses = [
+    "Nope.",
+    "Yeah... no.",
+    "Right! ...Just kidding.",
+    "That was the wrong guess.",
+    "You've clearly not been studying."
+]
+var timeResponses = [
+    "Couldn't make up your mind?",
+    "Cat got your tongue?",
+    "Time's up!",
+    "We ain't got all day..."
+]
 var randomizedQuestions = [];
+var randAnswers = [];
 var right = 0;
 var wrong = 0;
 var score = 0;
@@ -123,7 +144,7 @@ var timeAllowed = 10;
 var points = initialPoints;
 var correctAnswer;
 var arrayOfNumbers = [];
-var makeArrayLength = questions.length;
+var numOfQuestions = questions.length;
 var usedQuestions = 0;
 var answerChoicesNum = 4;
 var bac = 0;
@@ -148,7 +169,7 @@ function makeArrayOfNumbers(array) {
 };
 
 function randomizeQuestions() {
-    for (var j = 0; j < makeArrayLength; j++) {
+    for (var j = 0; j < numOfQuestions; j++) {
         var rando = random(arrayOfNumbers.length);
         var rando2 = arrayOfNumbers[rando];
         randomizedQuestions.push(questions[rando2]);
@@ -157,7 +178,7 @@ function randomizeQuestions() {
 }
 
 function chooseQuestion2() {
-    if (usedQuestions < makeArrayLength) {
+    if (usedQuestions < numOfQuestions) {
         gameState = 1;
         var questionIs = randomizedQuestions[usedQuestions];
         $("#question").html(questionIs.question);
@@ -204,59 +225,36 @@ function detectAnswer() {
 }
 
 function showResponse() {
-
-
     $('.answerChoice').off('click');
     $("#scoreboard").html('Score: <span class="writ">' + score + '</span>');
     $("#right").html("Right: <span class='writ'>" + right + '</span>');
     $("#wrong").html("Wrong: <span class='writ'>" + wrong + '</span>');
     if (gameState === 2) {
-        var winResponses = [
-            "You're a genius.",
-            "Are you cheating!?",
-            "Yep. That's right.",
-            "Way to go!",
-            "Overachiever."
-        ]
         $("#question").html(winResponses[random(winResponses.length)]);
         var ding = new Audio('./assets/sounds/bell.mp3');
-        setTimeout(function(){ding.play()}, 200);
+        setTimeout(function () { ding.play() }, 200);
         //function for displaying points gained. animate in CSS
         setTimeout(chooseQuestion2, 2200);
     } else if (gameState === 3) {
-        var loseResponses = [
-            "Nope.",
-            "Yeah... no.",
-            "Right! ...Just kidding.",
-            "That was the wrong guess.",
-            "You've clearly not been studying."
-        ]
         $("#question").html(loseResponses[random(loseResponses.length)] + " The answer was &quot;" + correctAnswer + "&quot;");
         takeShot();
         setTimeout(chooseQuestion2, 2200);
     } else if (gameState === 4) {
-        var timeResponses = [
-            "Couldn't make up your mind?",
-            "Cat got your tongue?",
-            "Time's up!",
-            "We ain't got all day..."
-        ]
         $("#question").html(timeResponses[random(timeResponses.length)]);
         takeShot();
         setTimeout(chooseQuestion2, 2200);
     } else if (gameState === 5) {
         gameOver();
+        var trombone = new Audio('./assets/sounds/trombone.mp3');
+        setTimeout(function () { trombone.play(); }, 100);
         if (bac <= 0) {
             $("#question").html("Congratulations! You're driving!");
         } else if (bac > 0 && bac < 4) {
             $("#question").html("Good job. Don't fall off the barstool there, buddy.");
-
         } else if (bac >= 4) {
             $("#question").html('Go sober up!')
                 .css('filter', 'blur(0px)')
                 .css('font-size', '5vw');
-
-
         }
     }
 }
@@ -265,17 +263,17 @@ function showResponse() {
 function takeShot() {
     var thud = new Audio('./assets/sounds/glasssetdown.mp3');
     var gulp = new Audio('./assets/sounds/gulp.mp3');
-    setTimeout(function(){gulp.play()}, 250);
-    setTimeout(function(){thud.play()}, 450);
+    setTimeout(function () { gulp.play(),
+        glass.attr('src', 'assets/images/shotempty.png');
+     }, 250);
+    setTimeout(function () {
+        thud.play()
+    }, 550);
     var i = usedQuestions - 1;
     var glass = $("#glass" + i);
-    var blur = bac + 1;
-    bac = blur;
-    glass.attr('src', 'assets/images/shotempty.png');
-    $('#pageContainer').css('filter', "blur(" + blur + 'px)');
+    bac ++;
+    $('#pageContainer').css('filter', "blur(" + bac + 'px)');
 }
-
-
 //==================================================================
 
 function reset() {
@@ -293,17 +291,14 @@ function reset() {
     $('#wrong').html("Wrong: <span class='writ'>" + wrong + '</span>');
     makeArrayOfNumbers(questions);
     randomizeQuestions(questions, randomizedQuestions);
-    for (var i = 0; i < makeArrayLength; i++) {
+    for (var i = 0; i < numOfQuestions; i++) {
         $("#glass" + i).remove();
     }
     $("#question")
         .css('filter', 'none')
         .css('font-size', '2vw');
-
-
     stackem();
     chooseQuestion2();
-
 }
 
 function gameOver() {
@@ -312,18 +307,14 @@ function gameOver() {
     $('#answerD').hide();
     $('#answerA').html("Click to play again.");
     $('#answerA').on('click', function () {
-
         reset();
     });
-
-
 }
 
 //putting up shot glasses=================================================================\
 function stackem() {
-    var x = 200;
     var width = 4;
-    for (var i = 0; i < makeArrayLength; i++) {
+    for (var i = 0; i < numOfQuestions; i++) {
         var glass = $("<img id='glass" + i + "'>").attr('src', 'assets/images/shotfull.png');
         glass.css('position', 'relative')
             .css('width', width + 'vw')
