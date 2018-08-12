@@ -313,14 +313,14 @@ function gameOver() {
 
 //putting up shot glasses=================================================================\
 function stackem() {
-    var width = 4;
+    const width = 4;
     for (var i = 0; i < numOfQuestions; i++) {
-        var glass = $("<img id='glass" + i + "'>").attr('src', 'assets/images/shotfull.png');
+        var glass = $(`<img id='glass${i}'>`).attr('src', 'assets/images/shotfull.png');
         glass.css('position', 'relative')
             .css('width', width + 'vw')
             .css('height', width * 1.3 + 'vw')
             .css('left', ((5 + i / 2) * width) + '%')
-            .css('bottom', '13vw');
+            .css('bottom', '12.4vw');
         $('#pageContainer').append(glass);
     }
 }
@@ -377,9 +377,9 @@ var timer = {
 window.onload = function () {
     $('#points').html(initialPoints);
     $('#timer').html(timeAllowed);
-    $('#right').html("Right: <span class='writ'>" + right + '</span>');
-    $('#wrong').html("Wrong: <span class='writ'>" + wrong + '</span>');
-    $("#scoreboard").html('Score: <span class="writ">' + score + '</span>');
+    $('#right').html(`Right: <span class='writ'> ${right} </span>`);
+    $('#wrong').html(`Wrong: <span class='writ'> ${wrong} </span>`);
+    $("#scoreboard").html(`Score: <span class="writ">${score}</span>`);
     stackem();
     if (gameState === 0) {
         $('#answerB').hide();
