@@ -1,4 +1,4 @@
-# Trivia-Game
+# Tiki Bar Trivia
 [Click here to get started](https://dph0718.github.io/Trivia-Game/)
 
 1. You will have to take a shot if you get an answer wrong.
